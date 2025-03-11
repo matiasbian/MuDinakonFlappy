@@ -32,7 +32,18 @@ public class BirdControl : MonoBehaviour {
             .Append(transform.DOMoveY(birdStartY, birdTime).SetEase(Ease.Linear))
             .SetLoops(-1);
     }
-	
+
+	private void OnEnable()
+	{
+		GameManager.Instance.EventGameOver += GameOver;
+	}
+
+	private void OnDisable()
+	{
+		if (GameManager.Instance != null)
+			GameManager.Instance.EventGameOver -= GameOver;
+	}
+
 	// Update is called once per frame
 	void Update () {
         if (!inGame)
@@ -69,13 +80,9 @@ public class BirdControl : MonoBehaviour {
 		{
             if (!dead)
             {
-                GameObject[] objs = GameObject.FindGameObjectsWithTag("movable");
-                foreach (GameObject g in objs)
-                {
-                    g.BroadcastMessage("GameOver");
-                }
+				GameManager.Instance.GameOver();
 
-                GetComponent<Animator>().SetTrigger("die");
+				GetComponent<Animator>().SetTrigger("die");
                 AudioSource.PlayClipAtPoint(hit, Vector3.zero);
             }
 

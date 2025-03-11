@@ -11,6 +11,17 @@ public class PipeMove : MonoBehaviour {
 		body.velocity = new Vector2(moveSpeed, 0);
 	}
 
+	private void OnEnable()
+	{
+		GameManager.Instance.EventGameOver += GameOver;
+	}
+
+	private void OnDisable()
+	{
+		if (GameManager.Instance != null)
+			GameManager.Instance.EventGameOver -= GameOver;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (transform.position.x <= -0.4) 

@@ -14,7 +14,18 @@ public class PipeSpawner : MonoBehaviour {
 		// Start calling the Spawn function repeatedly after a delay .		
 	}
 
-    public void StartSpawning()
+	private void OnEnable()
+	{
+		GameManager.Instance.EventGameOver += GameOver;
+	}
+
+	private void OnDisable()
+	{
+		if (GameManager.Instance != null)
+			GameManager.Instance.EventGameOver -= GameOver;
+	}
+
+	public void StartSpawning()
     {
         InvokeRepeating("Spawn", spawnDelay, spawnTime);
     }
